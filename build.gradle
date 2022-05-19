@@ -1,0 +1,55 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.3.2"
+}
+
+version = "0.1"
+group = "io.activated.example"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor:3.4.1")
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut:micronaut-runtime")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    implementation("io.micronaut:micronaut-validation")
+
+    implementation("io.micronaut.flyway:micronaut-flyway")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa:3.4.1")
+    runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
+    runtimeOnly("com.h2database:h2")
+
+    implementation platform('io.projectreactor:reactor-bom:2020.0.19')
+    implementation 'io.projectreactor:reactor-core'
+
+    testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
+
+}
+
+
+application {
+    mainClass.set("io.activated.example.Application")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("11")
+    targetCompatibility = JavaVersion.toVersion("11")
+}
+
+graalvmNative.toolchainDetection = false
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("io.activated.example.*")
+    }
+}
+
+
